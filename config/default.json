@@ -1,0 +1,5 @@
+{
+    "port": 5000,
+    "jwtSecret": "Racoon Daddy Barbarissimo v2",
+    "mongoURL": "mongodb+srv://MongoTestWorkR1D1:R1D1WorkTestMongo@cluster0.8ish0.mongodb.net/cluster0?retryWrites=true&w=majority"
+}
