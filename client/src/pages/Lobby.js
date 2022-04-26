@@ -1,5 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchMockCustomers } from '../asyncActions/customersMock';
 import { AuthContext } from '../context/AuthContext';
 import { addCustomerAction, deleteAllCustomersAction, removeCustomerAction } from '../store/customerReducer';
 
@@ -93,6 +94,9 @@ export const Lobby = () => {
                 <button
                     onClick={deleteAllCustomers}
                 >delete_all_customers</button>
+                <button
+                    onClick={() => dispatch(fetchMockCustomers())}
+                >add_MOCK_customers</button>
             </div>
         </div>
     );
