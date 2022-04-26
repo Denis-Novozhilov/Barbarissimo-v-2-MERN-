@@ -1,6 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { decrement, increment } from '../toolkitRedux/toolkitReducer';
+import { addTodo, decrement, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
+
+// import { decrement, increment } from '../toolkitRedux/toolkitReducer';
 
 export const Lobby = () => {
 
@@ -23,6 +25,15 @@ export const Lobby = () => {
                     <li key={id * Date.now()}>{td}</li>
                 )}
             </ul>
+            <button
+                onClick={() => dispatch(addTodo(prompt()))}
+            >add_toDo</button>
+            <button
+                onClick={() => dispatch(removeLastTodos())}
+            >remove_last_toDo</button>
+            <button
+                onClick={() => dispatch(removeAllTodos())}
+            >remove_all_toDo</button>
         </>
     )
 }
