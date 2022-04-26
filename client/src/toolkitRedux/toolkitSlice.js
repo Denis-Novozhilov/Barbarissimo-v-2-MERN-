@@ -4,7 +4,17 @@ const toolkitSlice = createSlice({
     name: "toolkit_slice",
     initialState: {
         count: 0,
-        todos: ['task_1', 'task_2', 'task_3', 'task_4', 'task_5']
+        todos: ['task_1', 'task_2', 'task_3', 'task_4', 'task_5'],
+        users: [
+            {
+                name: 'user1',
+                id: 1
+            },
+            {
+                name: 'user2',
+                id: 2
+            }
+        ]
     },
     reducers: {
         increment(state) {
@@ -25,9 +35,23 @@ const toolkitSlice = createSlice({
         },
         removeAllTodos(state) {
             state.todos = []
+        },
+        downloadUsers(state, action) {
+            state.users.push(...action.payload)
+        },
+        deleteAllUsers(state) {
+            state.users = []
         }
     }
 });
 
 export default toolkitSlice.reducer;
-export const { increment, decrement, addTodo, removeLastTodos, removeAllTodos } = toolkitSlice.actions;
+export const {
+    increment,
+    decrement,
+    addTodo,
+    removeLastTodos,
+    removeAllTodos,
+    downloadUsers,
+    deleteAllUsers
+} = toolkitSlice.actions;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, decrement, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
+import { fetchMockCustomersSlice } from '../asyncActions/customersMockSlice';
+import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
 
 // import { decrement, increment } from '../toolkitRedux/toolkitReducer';
 
@@ -8,6 +9,7 @@ export const Lobby = () => {
 
     const count = useSelector(state => state.toolkit_reducer.count)
     const todos = useSelector(state => state.toolkit_reducer.todos)
+    const users = useSelector(state => state.toolkit_reducer.users)
     const dispatch = useDispatch();
 
     return (
@@ -34,6 +36,18 @@ export const Lobby = () => {
             <button
                 onClick={() => dispatch(removeAllTodos())}
             >remove_all_toDo</button>
+            <ul>
+                {users.map((user, id) =>
+                    <li key={id * Date.now()}>{`${user.name}_${user.id}`}</li>
+                    // <li key={id * Date.now()}>{`${user.name}_${user.id}`}</li>
+                )}
+            </ul>
+            <button
+                onClick={() => dispatch(fetchMockCustomersSlice())}
+            >download_users</button>
+            <button
+                onClick={() => dispatch(deleteAllUsers())}
+            >delete_all_users</button>
         </>
     )
 }
