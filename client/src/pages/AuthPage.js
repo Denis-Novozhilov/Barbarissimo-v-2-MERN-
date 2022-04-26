@@ -15,10 +15,10 @@ export const AuthPage = () => {
 
     const [form, setForm] = useState({ email: '', password: '' });
 
-    useEffect(() => {
-        message(error);
-        clearError();
-    }, [error, message, clearError]);
+    // useEffect(() => {
+    //     message(error);
+    //     clearError();
+    // }, [error, message, clearError]);
 
     useEffect(() => {
         window.M && window.M.updateTextFields()
@@ -34,14 +34,20 @@ export const AuthPage = () => {
             message(data.message);
             message(`wait...`);
             setTimeout(() => { loginHandler() }, 3000)
-        } catch (error) { console.log(`Error : ${error.message}`) }
+        } catch (error) {
+            console.log(`Error:`,error.message);
+            message(error);
+        }
     };
 
     const loginHandler = async () => {
         try {
             const data = await request('api/auth/login', 'POST', { ...form });
             auth.login(data.token, data.userId);
-        } catch (error) { console.log(`Error: ${error.message}`) }
+        } catch (error) {
+            console.log(`Error:`,error.message);
+            message(error);
+        }
     };
 
     return (
