@@ -1,3 +1,45 @@
+
+
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import toolkitReducer from "./toolkitReducer";
+
+const rootReducer = combineReducers({
+    toolkit_reducer: toolkitReducer
+})
+
+export const store = configureStore({
+    reducer: rootReducer,
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { cashReducer } from "./cashReducer";
 import { customerReducer } from "./customerReducer";
@@ -7,9 +49,7 @@ import thunk from "redux-thunk";
 const rootReducer = combineReducers({
     cash_rd: cashReducer
 })
-// const rootReducer = combineReducers({
-//     cash_rd: cashReducer,
-//     customer_rd: customerReducer,
-// })
+
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+*/
