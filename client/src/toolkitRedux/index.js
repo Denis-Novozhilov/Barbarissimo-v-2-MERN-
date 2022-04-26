@@ -5,8 +5,11 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
-    cash_rd: cashReducer,
-    customer_rd: customerReducer,
+    cash_rd: cashReducer
 })
+// const rootReducer = combineReducers({
+//     cash_rd: cashReducer,
+//     customer_rd: customerReducer,
+// })
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));

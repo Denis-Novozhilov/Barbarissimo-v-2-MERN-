@@ -7,12 +7,12 @@ import { useRoutes } from './routes';
 import { useAuth } from './hooks/auth.hook';
 import 'materialize-css';
 import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 
 
 function App() {
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // !* ALL useEffect, useState - map thrue useSelector from defaultStore
   // const cash = useSelector(state => state.cash_R.cash);

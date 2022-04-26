@@ -2,42 +2,46 @@ import React, { useContext, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMockCustomers } from '../asyncActions/customersMock';
 import { AuthContext } from '../context/AuthContext';
+import { addCashAction, getCashAction } from '../store/cashReducer';
 import { addCustomerAction, deleteAllCustomersAction, removeCustomerAction } from '../store/customerReducer';
-
 
 
 export const Lobby = () => {
 
+    // !*
     const dispatch = useDispatch();
     const cash = useSelector(state => state.cash_rd.cash);
     const customers = useSelector(state => state.customer_rd.customers);
+
     const auth = useContext(AuthContext);
 
     // {
     //     //console.log(`auth `, auth)
     // }
 
-    const addCash = (csh) => {
-        console.log(`addCash ${typeof csh}, ${csh}`);
-        dispatch({ type: "ADD_CASH", payload: csh });
-    }
+    // !*
+    // const addCash = (csh) => {
+    //     console.log(`addCash ${typeof csh}, ${csh}`);
+    //     dispatch({ type: "ADD_CASH", payload: csh });
+    // }
+    // const getCash = (csh) => {
+    //     console.log(`getCash ${typeof csh}, ${csh}`);
+    //     dispatch({ type: "GET_CASH", payload: csh })
+    // }
 
-    const getCash = (csh) => {
-        console.log(`getCash ${typeof csh}, ${csh}`);
-        dispatch({ type: "GET_CASH", payload: csh })
-    }
+    const addCash = (csh) => dispatch(addCashAction(csh));
+    
+    const getCash = (csh) => dispatch(getCashAction(csh));
 
     const addCustomer = (name) => {
         const customer = {
             name,
             id: Date.now(),
         }
-        // dispatch({ type: "ADD_CUSTOMER", payload: customer });
         dispatch(addCustomerAction(customer));
     }
 
     const removeCustomer = (customer) => {
-        // dispatch({ type: "REMOVE_CUSTOMER", payload: customer.id })
         dispatch(removeCustomerAction(customer.id));
     }
     const deleteAllCustomers = () => {
@@ -63,12 +67,14 @@ export const Lobby = () => {
 
                 <button
                     onClick={() => { addCash(+inputEl1.current.value) }}
+                // onClick={() => { dispatch(addCashAction(+inputEl1.current.value)) }}
                 >add_cash</button>
 
                 <input ref={inputEl2} type="number" name="getCash" defaultValue="5" min="0" max="100" />
 
                 <button
                     onClick={() => { getCash(+inputEl2.current.value) }}
+                // onClick={() => { dispatch(getCashAction(+inputEl2.current.value)) }}
                 >get_cash</button>
 
             </div>
