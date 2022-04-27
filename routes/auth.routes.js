@@ -87,7 +87,7 @@ router.post(
                 { expiresIn: '2h' }
             );
 
-            res.json({ token, userId: user.id, message: `Wellcome ${email.split('@')[0]}.` })
+            res.json({ token, userId: user.id, userName: email.split('@')[0] })
 
         } catch (error) {
             res.status(500).json({ message: `Server error: ${error.message}` })

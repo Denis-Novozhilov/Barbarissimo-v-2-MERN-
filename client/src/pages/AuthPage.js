@@ -1,18 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import cn from 'classnames';
 import s from './AuthPage.module.css'
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
 import { AuthContext } from '../context/AuthContext';
 
+
+import { useDispatch, useSelector } from 'react-redux';
+import { logInThunk } from '../asyncActions/logInThunk';
+
 export const AuthPage = () => {
 
+
+    const logedStatus = useSelector(state => state.auth_reducer.isLogged)
+    const dispatch = useDispatch();
+
+    const inputEmail = useRef();
+    const inputPassword = useRef();
+
     const auth = useContext(AuthContext)
-
     const message = useMessage();
-
     const { loading, request, error, clearError } = useHttp();
-
     const [form, setForm] = useState({ email: '', password: '' });
 
     // useEffect(() => {
@@ -35,7 +43,7 @@ export const AuthPage = () => {
             message(`wait...`);
             setTimeout(() => { loginHandler() }, 3000)
         } catch (error) {
-            console.log(`Error:`,error.message);
+            console.log(`Error:`, error.message);
             message(error);
         }
     };
@@ -45,15 +53,55 @@ export const AuthPage = () => {
             const data = await request('api/auth/login', 'POST', { ...form });
             auth.login(data.token, data.userId);
         } catch (error) {
-            console.log(`Error:`,error.message);
+            console.log(`Error:`, error.message);
             message(error);
         }
     };
 
+    {/* <button
+              onClick={() => dispatch(logInThunk())} */}
     return (
         <div>
-            <h1>Wellcome to Barbarissimo v2</h1>
-            <h2>Authorization</h2>
+            <h4>Wellcome to Barbarissimo v2</h4>
+            <div className="card blue-grey darken-1">
+                <div className="card-content white-text">
+                    <div>
+                        TEST_LOGIN <br />
+                        <input ref={inputEmail} type="text" name="email" defaultValue="" />
+                        <input ref={inputPassword} type="password" name="password" defaultValue="" />
+
+                        <button
+                            onClick={async () => {
+                                console.log(`BEFORE login ↓`);
+                                console.log(`{${inputEmail.current.name}:${inputEmail.current.value},${inputPassword.current.name}:${inputPassword.current.value}}`);
+                                let bodyReq = JSON.stringify({ [inputEmail.current.name]: inputEmail.current.value, [inputPassword.current.name]: inputPassword.current.value });
+                                let loginUrl = 'api/auth/login';
+                                let headers = {["Content-Type"]: "application/json"}
+                                dispatch(logInThunk(loginUrl, "POST", bodyReq, headers));
+
+                                /*
+                                try {
+                                    const data = await request('api/auth/login', 'POST', { ...bodyReq });
+                                    console.log(`DATA`)
+                                    console.log(data);
+                                } catch (error) {
+                                    console.log(`error `, error)
+                                }*/
+                                // write [token] to store
+                                // write [userId] to store
+                                // write [userName] to store
+                            }
+                            }
+                        >
+                            login</button><br />
+                        logedStatus <br />
+                        {`${logedStatus}`}
+                        {/* </div> */}
+                    </div>
+                </div>
+            </div>
+
+            <h5>Authorization</h5>
             <div className="card blue-grey darken-1">
                 <div className="card-content white-text">
                     <span className="card-title">Login or Sign Up</span>
@@ -99,6 +147,6 @@ export const AuthPage = () => {
                     </button>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };

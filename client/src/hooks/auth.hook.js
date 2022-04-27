@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useHttp } from './http.hook';
 
 const storageName = 'userData';
+// write to store and to storage
 
 export const useAuth = () => {
 

@@ -7,10 +7,13 @@ import { useRoutes } from './routes';
 import { useAuth } from './hooks/auth.hook';
 import 'materialize-css';
 import cn from 'classnames';
+
+
 // import { useDispatch, useSelector } from 'react-redux';
 
 
 function App() {
+
 
   // const dispatch = useDispatch();
 
@@ -23,7 +26,8 @@ function App() {
 
   const { token, login, logout, userId, ping } = useAuth();
 
-  const isAuthenticated = !!token;
+  // const isAuthenticated = !!token;
+  const isAuthenticated = false;
 
   // const isAuthenticated = ping(token);
   // const isAuthenticated = true;
@@ -40,6 +44,7 @@ function App() {
       <Router>
         {/* <div className={cn("container")}> */}
         <div className={cn("container", "hoverable", "z-depth-2", s.outlineRed)}>
+          
           {
             console.log(`
   
@@ -47,6 +52,9 @@ function App() {
               isAuthenticated - ${isAuthenticated}
 
           `)}
+
+
+
           {routes}
         </div>
       </Router>

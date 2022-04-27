@@ -7,3 +7,8 @@ export const fetchMockCustomers = () => {
             .then(json => dispatch(addManyCustomersAction(json)))
     }
 }
+
+// import action
+// ~magic~
+// dispatch json
+// at App component render Logged status
