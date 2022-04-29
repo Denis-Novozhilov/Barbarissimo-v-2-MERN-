@@ -1,21 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMockCustomersSlice } from '../asyncActions/customersMockSlice';
+import { STORAGE_AUTHENTICATION } from '../configuration/config';
+import { logOut } from '../toolkitRedux/authSlice';
+import { v4 as uuidv4 } from 'uuid';
+// import { messageSimple } from "../hooks/messageSimple";
+
 import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
 
-// import { decrement, increment } from '../toolkitRedux/toolkitReducer';
-
 export const Lobby = () => {
+
+    const [mdbUsers, setMdbUsers] = useState([]);
+    console.log(`mdbUsers: ${mdbUsers}`)
 
     const count = useSelector(state => state.toolkit_reducer.count)
     const todos = useSelector(state => state.toolkit_reducer.todos)
     const users = useSelector(state => state.toolkit_reducer.users)
     const dispatch = useDispatch();
 
+
+    const logoutHandlerThunk = () => {
+        localStorage.removeItem(STORAGE_AUTHENTICATION);
+        dispatch(logOut());
+    }
+
     return (
         <>
-            <h1>Lobby_empty_template_redux/toolkit_test</h1>
-            <h3>count: {count}</h3>
+            <h4>Lobby_empty_template<br />redux/toolkit_test</h4>
+            <button
+                onClick={() => logoutHandlerThunk()}>
+                logOut</button><br />
+            <h5>Get_all_app_users_from_mongoDB</h5>
+            <ul>
+                {mdbUsers && mdbUsers.length > 0 ?
+                    mdbUsers.map(user => <li key={uuidv4()}>{user}</li>) :
+                    'empty'}
+            </ul>
+            <button
+                onClick={() => setMdbUsers((prev) => {
+                    console.log(`prev: ${prev}`)
+                    return [...prev, `${uuidv4()}_empty`]
+                })}
+            >add_random_users</button>
+            <button onClick={async () => {
+                fetch('api/admin/test')
+                    .then(response => response.json())
+                    .then(json => {
+                        let arr = json.allUsers.map(obj => obj.email.split('@')[0]);
+                        setMdbUsers((prev) => [...prev, ...arr])
+                    })
+            }}
+            >get_from_server</button>
+            <button onClick={() => setMdbUsers(() => [])}
+            >clear_all</button>
+            <h5>count: {count}</h5>
             <button
                 onClick={() => dispatch(increment())}
             >increment</button>
@@ -24,7 +62,7 @@ export const Lobby = () => {
             >decrement</button>
             <ul>
                 {todos.map((td, id) =>
-                    <li key={id * Date.now()}>{td}</li>
+                    <li key={uuidv4()}>{td}</li>
                 )}
             </ul>
             <button
@@ -39,7 +77,6 @@ export const Lobby = () => {
             <ul>
                 {users.map((user, id) =>
                     <li key={id * Date.now()}>{`${user.name}_${user.id}`}</li>
-                    // <li key={id * Date.now()}>{`${user.name}_${user.id}`}</li>
                 )}
             </ul>
             <button
@@ -52,115 +89,5 @@ export const Lobby = () => {
     )
 }
 
-// import React, { useContext, useRef } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { fetchMockCustomers } from '../asyncActions/customersMock';
-// import { AuthContext } from '../context/AuthContext';
-// import { addCashAction, getCashAction } from '../store/cashReducer';
-// import { addCustomerAction, deleteAllCustomersAction, removeCustomerAction } from '../store/customerReducer';
-
-// export const Lobby = () => {
-
-//     // !*
-//     const dispatch = useDispatch();
-//     const cash = useSelector(state => state.cash_rd.cash);
-//     const customers = useSelector(state => state.customer_rd.customers);
-
-//     const auth = useContext(AuthContext);
-
-//     // {
-//     //     //console.log(`auth `, auth)
-//     // }
-
-//     // !*
-//     // const addCash = (csh) => {
-//     //     console.log(`addCash ${typeof csh}, ${csh}`);
-//     //     dispatch({ type: "ADD_CASH", payload: csh });
-//     // }
-//     // const getCash = (csh) => {
-//     //     console.log(`getCash ${typeof csh}, ${csh}`);
-//     //     dispatch({ type: "GET_CASH", payload: csh })
-//     // }
-
-//     const addCash = (csh) => dispatch(addCashAction(csh));
-
-//     const getCash = (csh) => dispatch(getCashAction(csh));
-
-//     const addCustomer = (name) => {
-//         const customer = {
-//             name,
-//             id: Date.now(),
-//         }
-//         dispatch(addCustomerAction(customer));
-//     }
-
-//     const removeCustomer = (customer) => {
-//         dispatch(removeCustomerAction(customer.id));
-//     }
-//     const deleteAllCustomers = () => {
-//         dispatch(deleteAllCustomersAction());
-//     }
-
-//     const inputEl1 = useRef(null);
-//     const inputEl2 = useRef(null);
-
-//     return (
-//         <div>
-//             <h1>Lobby</h1>
-//             <button
-//                 onClick={auth.logout}
-//             >Logout</button>
-//             <hr />
-//             <div>
-//                 <h5>cash from lobby <b>[{cash}]</b></h5>
-//             </div>
-//             <div>
-
-//                 <input ref={inputEl1} type="number" name="addCash" defaultValue="5" min="0" max="100" />
-
-//                 <button
-//                     onClick={() => { addCash(+inputEl1.current.value) }}
-//                 // onClick={() => { dispatch(addCashAction(+inputEl1.current.value)) }}
-//                 >add_cash</button>
-
-//                 <input ref={inputEl2} type="number" name="getCash" defaultValue="5" min="0" max="100" />
-
-//                 <button
-//                     onClick={() => { getCash(+inputEl2.current.value) }}
-//                 // onClick={() => { dispatch(getCashAction(+inputEl2.current.value)) }}
-//                 >get_cash</button>
-
-//             </div>
-//             <div>
-//                 <hr />
-//                 {customers.length > 0 ?
-//                     <div>
-//                         {customers.map(c => <div>
-//                             <b>{c.name}</b>_____{c.id}_____
-//                             <button
-//                                 onClick={() => { removeCustomer(c) }}
-//                             >delete</button>
-//                         </div>)}
-//                     </div>
-//                     :
-//                     <div>
-//                         Clints list is empty
-//                     </div>
-//                 }
-//                 <button
-//                     onClick={() => { addCustomer(prompt()) }}
-//                 >add_customer</button>
-//                 <button
-//                     onClick={deleteAllCustomers}
-//                 >delete_all_customers</button>
-//                 <button
-//                     onClick={() => dispatch(fetchMockCustomers())}
-//                 >add_MOCK_customers</button>
-//             </div>
-//         </div>
-//     );
-// };
-
 // https://www.youtube.com/watch?v=CtrWoX_KDjE
 // redux_thunk - get objcts from mongoDB
-// redux_toolkit - use in project
