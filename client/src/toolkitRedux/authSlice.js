@@ -8,6 +8,8 @@ const authSlice = createSlice({
         userId: null,
         userName: null,
         error: null,
+        pingStatus: null,
+        signInStatus: null
     },
     reducers: {
         logIn(state, action) {
@@ -17,16 +19,28 @@ const authSlice = createSlice({
             state.isLogged = !!action.payload.token;
             state.error = action.payload.message || null;
         },
-        logOut(state) {/*
-           clean: [token],
-                  [userId],
-                  [userName],
-                  [isLogged],
-        */},
+        ping(state, action) {
+            state.pingStatus = action.payload;
+        },
+        logOut(state, action) {
+            state.token = null;
+            state.userId = null;
+            state.userName = null;
+            state.isLogged = false;
+            state.pingStatus = action.payload || null;
+            state.error = 'logged_out';
+        },
+        signIn(state, action) {
+            state.signInStatus = action.payload
+        }
+
     }
 })
 
 export default authSlice.reducer;
 export const {
-    logIn
+    logIn,
+    ping,
+    logOut,
+    signIn
 } = authSlice.actions;

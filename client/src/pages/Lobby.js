@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMockCustomersSlice } from '../asyncActions/customersMockSlice';
-import { logInThunk } from '../asyncActions/logInThunk';
+import { STORAGE_AUTHENTICATION } from '../configuration/config';
+import { logOut } from '../toolkitRedux/authSlice';
 
 import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
 
@@ -12,9 +13,18 @@ export const Lobby = () => {
     const users = useSelector(state => state.toolkit_reducer.users)
     const dispatch = useDispatch();
 
+
+    const logoutHandlerThunk = () => {
+        localStorage.removeItem(STORAGE_AUTHENTICATION);
+        dispatch(logOut());
+    }
+
     return (
         <>
             <h1>Lobby_empty_template_redux/toolkit_test</h1>
+            <button
+                onClick={() => logoutHandlerThunk()}>
+                logOut</button><br />
             <h3>count: {count}</h3>
             <button
                 onClick={() => dispatch(increment())}
@@ -39,7 +49,6 @@ export const Lobby = () => {
             <ul>
                 {users.map((user, id) =>
                     <li key={id * Date.now()}>{`${user.name}_${user.id}`}</li>
-                    // <li key={id * Date.now()}>{`${user.name}_${user.id}`}</li>
                 )}
             </ul>
             <button

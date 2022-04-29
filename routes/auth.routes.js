@@ -7,7 +7,7 @@ const User = require('../models/User');
 const router = Router();
 // const { default: App } = require('../client/src/App');
 
-//api/auth/register
+// api/auth/register
 router.post(
     '/register',
     [
@@ -15,7 +15,6 @@ router.post(
         check('password', 'Min password length - 6 symbols').isLength({ min: 6 })
     ],
     async (req, res) => {
-
         try {
 
             const errors = validationResult(req);
@@ -31,7 +30,7 @@ router.post(
             const candidate = await User.findOne({ email });
 
             if (candidate) {
-                return res.status(400).json({ message: `Authentication error. Try another email.` })
+                return res.status(400).json({ status: `error`, message: `Sign In error. Try another email.` })
             }
 
             const hashedPassword = await bcrypt.hash(password, 7);
@@ -42,10 +41,10 @@ router.post(
 
             await user.save();
 
-            res.status(201).json({ message: `User ${email} created.` });
+            res.status(201).json({ status: `ok`, message: `User ${email} created.` });
 
         } catch (error) {
-            res.status(500).json({ message: `Server error: ${error.message}` })
+            res.status(500).json({ status: `error`, message: `Server error: ${error.message}` })
         }
     });
 
@@ -57,6 +56,7 @@ router.post(
         check('password', 'Min password length - 6 symbols').exists()
     ],
     async (req, res) => {
+
         try {
 
             const errors = validationResult(req);
@@ -84,7 +84,7 @@ router.post(
             const token = jwt.sign(
                 { userId: user.id },
                 config.get('jwtSecret'),
-                { expiresIn: '2h' }
+                { expiresIn: '24h' }
             );
 
             res.json({ token, userId: user.id, userName: email.split('@')[0] })

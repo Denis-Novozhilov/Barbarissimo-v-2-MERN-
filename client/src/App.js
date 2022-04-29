@@ -9,25 +9,25 @@ import 'materialize-css';
 import cn from 'classnames';
 
 
-// import { useDispatch, useSelector } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 
 function App() {
 
+  const logedStatus = useSelector(state => state.auth_reducer.isLogged);
 
   // const dispatch = useDispatch();
 
   // !* ALL useEffect, useState - map thrue useSelector from defaultStore
   // const cash = useSelector(state => state.cash_R.cash);
   // console.log(`
-  
+
   // CASH - ${cash}
   // `)
 
-  const { token, login, logout, userId, ping } = useAuth();
+  // const { token, login, logout, userId, ping } = useAuth();
 
   // const isAuthenticated = !!token;
-  const isAuthenticated = false;
+  const isAuthenticated = logedStatus;
 
   // const isAuthenticated = ping(token);
   // const isAuthenticated = true;
@@ -40,11 +40,11 @@ function App() {
   const routes = useRoutes(isAuthenticated);
 
   return (
-    <AuthContext.Provider value={{ token, login, logout, userId, isAuthenticated }}>
+    // <AuthContext.Provider value={{ token, login, logout, userId, isAuthenticated }}>
       <Router>
         {/* <div className={cn("container")}> */}
         <div className={cn("container", "hoverable", "z-depth-2", s.outlineRed)}>
-          
+
           {
             console.log(`
   
@@ -58,7 +58,7 @@ function App() {
           {routes}
         </div>
       </Router>
-    </AuthContext.Provider>
+    // </AuthContext.Provider>
   );
 }
 
