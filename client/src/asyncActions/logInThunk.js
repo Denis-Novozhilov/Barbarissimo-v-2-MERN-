@@ -1,11 +1,11 @@
 import { LOGIN_URL, STORAGE_AUTHENTICATION } from "../configuration/config";
+import { messageSimple } from "../hooks/messageSimple";
 import { logIn } from "../toolkitRedux/authSlice";
 
 const method = "POST";
-const headers = { ["Content-Type"]: "application/json" };
+const headers = { "Content-Type": "application/json" };
 
 export const logInThunk = (body) => {
-
 
     return function (dispatch) {
         fetch(LOGIN_URL, { method, body, headers })
@@ -16,6 +16,7 @@ export const logInThunk = (body) => {
                     userId: json.userId,
                     userName: json.userName
                 }));
+                messageSimple(json.message);
                 dispatch(logIn(json));
             })
     }

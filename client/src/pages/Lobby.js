@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMockCustomersSlice } from '../asyncActions/customersMockSlice';
 import { STORAGE_AUTHENTICATION } from '../configuration/config';
 import { logOut } from '../toolkitRedux/authSlice';
+import { v4 as uuidv4 } from 'uuid';
+// import { messageSimple } from "../hooks/messageSimple";
 
 import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
 
 export const Lobby = () => {
+
+    const [mdbUsers, setMdbUsers] = useState([]);
+    console.log(`mdbUsers: ${mdbUsers}`)
 
     const count = useSelector(state => state.toolkit_reducer.count)
     const todos = useSelector(state => state.toolkit_reducer.todos)
@@ -21,11 +26,34 @@ export const Lobby = () => {
 
     return (
         <>
-            <h1>Lobby_empty_template_redux/toolkit_test</h1>
+            <h4>Lobby_empty_template<br />redux/toolkit_test</h4>
             <button
                 onClick={() => logoutHandlerThunk()}>
                 logOut</button><br />
-            <h3>count: {count}</h3>
+            <h5>Get_all_app_users_from_mongoDB</h5>
+            <ul>
+                {mdbUsers && mdbUsers.length > 0 ?
+                    mdbUsers.map(user => <li key={uuidv4()}>{user}</li>) :
+                    'empty'}
+            </ul>
+            <button
+                onClick={() => setMdbUsers((prev) => {
+                    console.log(`prev: ${prev}`)
+                    return [...prev, `${uuidv4()}_empty`]
+                })}
+            >add_random_users</button>
+            <button onClick={async () => {
+                fetch('api/admin/test')
+                    .then(response => response.json())
+                    .then(json => {
+                        let arr = json.allUsers.map(obj => obj.email.split('@')[0]);
+                        setMdbUsers((prev) => [...prev, ...arr])
+                    })
+            }}
+            >get_from_server</button>
+            <button onClick={() => setMdbUsers(() => [])}
+            >clear_all</button>
+            <h5>count: {count}</h5>
             <button
                 onClick={() => dispatch(increment())}
             >increment</button>
@@ -34,7 +62,7 @@ export const Lobby = () => {
             >decrement</button>
             <ul>
                 {todos.map((td, id) =>
-                    <li key={id * Date.now()}>{td}</li>
+                    <li key={uuidv4()}>{td}</li>
                 )}
             </ul>
             <button
@@ -63,4 +91,3 @@ export const Lobby = () => {
 
 // https://www.youtube.com/watch?v=CtrWoX_KDjE
 // redux_thunk - get objcts from mongoDB
-// redux_toolkit - use in project

@@ -33,7 +33,6 @@ const authSlice = createSlice({
         signIn(state, action) {
             state.signInStatus = action.payload
         }
-
     }
 })
 

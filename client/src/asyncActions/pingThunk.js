@@ -1,10 +1,10 @@
-import { PING_URL, HEADERS_APP_JSON } from "../configuration/config";
+import { PING_URL } from "../configuration/config";
 import { logIn, logOut, ping } from "../toolkitRedux/authSlice";
 
 export const pingThunk = (body, prewData) => {
 
     const method = "POST";
-    const headers = { ["Content-Type"]: "application/json" };
+    const headers = { "Content-Type": "application/json" };
 
     return function (dispatch) {
         fetch(PING_URL, { method, body, headers })
