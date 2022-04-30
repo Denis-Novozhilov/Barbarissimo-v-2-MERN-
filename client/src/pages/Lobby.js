@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMockCustomersSlice } from '../asyncActions/customersMockSlice';
-import { STORAGE_AUTHENTICATION } from '../configuration/config';
+import { CREATE_PHRASE_URL, GET_ALL_COMMON_PHRASES_URL, STORAGE_AUTHENTICATION } from '../configuration/config';
 import { logOut } from '../toolkitRedux/authSlice';
 import { v4 as uuidv4 } from 'uuid';
 // import { messageSimple } from "../hooks/messageSimple";
@@ -11,7 +11,7 @@ import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLa
 export const Lobby = () => {
 
     const [mdbUsers, setMdbUsers] = useState([]);
-    console.log(`mdbUsers: ${mdbUsers}`)
+    const [mdbPhrases, setMdbPhrases] = useState([]);
 
     const count = useSelector(state => state.toolkit_reducer.count)
     const todos = useSelector(state => state.toolkit_reducer.todos)
@@ -42,17 +42,60 @@ export const Lobby = () => {
                     return [...prev, `${uuidv4()}_empty`]
                 })}
             >add_random_users</button>
+
             <button onClick={async () => {
-                fetch('api/admin/test')
+                fetch('api/admin/allusers')
                     .then(response => response.json())
                     .then(json => {
+                        let _arr = json.allUsers.map(obj => obj);
+                        console.table(_arr);
                         let arr = json.allUsers.map(obj => obj.email.split('@')[0]);
                         setMdbUsers((prev) => [...prev, ...arr])
                     })
             }}
             >get_from_server</button>
+
+            <button onClick={async () => {
+                fetch('api/admin/test')
+                    .then(response => response.json())
+                    .then(json => {
+                        let _arr = Array.isArray(json.allUsers) ? json.allUsers.map(obj => obj) : json.allUsers;
+                        console.table(_arr);
+                        // let arr = json.allUsers.map(obj => obj.email.split('@')[0]);
+                        // setMdbUsers((prev) => [...prev, ...arr])
+                    })
+            }}
+            >get_test</button>
+
             <button onClick={() => setMdbUsers(() => [])}
             >clear_all</button>
+
+
+            <h5>Phrases</h5>
+            <ul>
+                {mdbPhrases && mdbPhrases.length > 0 ?
+                    mdbPhrases.map(phrase => <li key={uuidv4()}>{JSON.stringify(phrase)}</li>) :
+                    'empty'}
+            </ul>
+            <button onClick={async () => {
+                fetch(CREATE_PHRASE_URL)
+                    .then(response => response.json())
+                    .then(json => console.log(JSON.stringify(json)))
+            }}
+            >create_basic_phrase</button>
+
+            <button onClick={async () => {
+                fetch(GET_ALL_COMMON_PHRASES_URL)
+                    .then(response => response.json())
+                    .then(json => {
+                        console.log(JSON.stringify(json))
+                        let arr = json.allCommonPhrases.map(obj => JSON.stringify(obj));
+                        // let arr = json.allCommonPhrases.map(obj => obj.Russian);
+                        setMdbPhrases(arr)
+                    })
+            }}
+            >get_all_phrases</button>
+
             <h5>count: {count}</h5>
             <button
                 onClick={() => dispatch(increment())}
