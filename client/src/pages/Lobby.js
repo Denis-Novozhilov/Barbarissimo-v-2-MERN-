@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMockCustomersSlice } from '../asyncActions/customersMockSlice';
-import { CREATE_PHRASE_URL, GET_ALL_COMMON_PHRASES_URL, STORAGE_AUTHENTICATION } from '../configuration/config';
+import { CREATE_PHRASE_URL, CREATE_USER_PHRASE, GET_ALL_COMMON_PHRASES_URL, STORAGE_AUTHENTICATION } from '../configuration/config';
 import { logOut } from '../toolkitRedux/authSlice';
 import { v4 as uuidv4 } from 'uuid';
-// import { messageSimple } from "../hooks/messageSimple";
+import { messageSimple } from "../hooks/messageSimple";
 
 import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
 
@@ -13,9 +13,13 @@ export const Lobby = () => {
     const [mdbUsers, setMdbUsers] = useState([]);
     const [mdbPhrases, setMdbPhrases] = useState([]);
 
-    const count = useSelector(state => state.toolkit_reducer.count)
-    const todos = useSelector(state => state.toolkit_reducer.todos)
-    const users = useSelector(state => state.toolkit_reducer.users)
+    const count = useSelector(state => state.toolkit_reducer.count);
+    const todos = useSelector(state => state.toolkit_reducer.todos);
+    const users = useSelector(state => state.toolkit_reducer.users);
+
+    // task [] add redux auth_reducer with email and improve this variable ↓
+    const userEmail = `${useSelector(state => state.auth_reducer.userName)}@gmail.com`;
+
     const dispatch = useDispatch();
 
 
@@ -23,6 +27,27 @@ export const Lobby = () => {
         localStorage.removeItem(STORAGE_AUTHENTICATION);
         dispatch(logOut());
     }
+
+
+
+    // task [] DRAFT createUserPhrase
+    const createUserPhrase = async () => {
+        const phrase = {
+                "Russian": "russ_value",
+                "Spanish": "span_value",
+                "English": "eng_value",
+                "German": "germ_value",
+                "Additional": "nothing",
+                "id": "x_10"
+        };
+        const mail = userEmail;
+        const body = JSON.stringify({mail,phrase});
+        const method = "POST";
+        const headers = { "Content-Type": "application/json" };
+        fetch(CREATE_USER_PHRASE, { method, headers, body })
+            .then(response => response.json())
+            .then(json => messageSimple(JSON.stringify(json.message)))
+    };
 
     return (
         <>
@@ -65,7 +90,7 @@ export const Lobby = () => {
                         // setMdbUsers((prev) => [...prev, ...arr])
                     })
             }}
-            >get_test</button>
+            >get_test_for_user_denmatuha001@gmail.com</button>
 
             <button onClick={() => setMdbUsers(() => [])}
             >clear_all</button>
@@ -82,7 +107,14 @@ export const Lobby = () => {
                     .then(response => response.json())
                     .then(json => console.log(JSON.stringify(json)))
             }}
-            >create_basic_phrase</button>
+            >create_common_phrase</button>
+
+
+            <button onClick={async () => {
+                createUserPhrase();
+            }}
+            >create_USER_phrase</button>
+
 
             <button onClick={async () => {
                 fetch(GET_ALL_COMMON_PHRASES_URL)
