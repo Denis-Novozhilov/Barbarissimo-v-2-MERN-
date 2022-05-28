@@ -1,23 +1,21 @@
 import React, { useEffect, useRef } from 'react';
-// import cn from 'classnames';
-// import s from './AuthPage.module.css'
+import cn from 'classnames';
+import s from './AuthNSignUp.module.css'
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logInThunk } from '../asyncActions/logInThunk';
 import { pingThunk } from '../asyncActions/pingThunk';
 import { STORAGE_AUTHENTICATION } from '../configuration/config';
-import { signInThunk } from '../asyncActions/signInThunk';
+import { NavLink } from 'react-router-dom';
 
 export const AuthPage = () => {
 
-    const logedStatus = useSelector(state => state.auth_reducer.isLogged);
-    const pingStatus = useSelector(state => state.auth_reducer.pingStatus);
     const dispatch = useDispatch();
     const inputEmail = useRef();
     const inputPassword = useRef();
+    const authForm = useRef();
 
     useEffect(() => {
-        window.M && window.M.updateTextFields();
         pingAuth();
     });
 
@@ -34,35 +32,41 @@ export const AuthPage = () => {
         dispatch(logInThunk(requestBody));
     };
 
-    const signInHandlerThunk = async () => {
-        const requestBody = JSON.stringify({ [inputEmail.current.name]: inputEmail.current.value, [inputPassword.current.name]: inputPassword.current.value });
-        dispatch(signInThunk(requestBody));
-    };
-
     return (
-        <div>
-            <h4>Wellcome to Barbarissimo v2</h4>
-            <div className="card blue-grey darken-1">
-                <div className="card-content white-text">
-                    <div>
-                        TEST_LOGIN <br />
-                        <input ref={inputEmail} type="text" name="email" defaultValue="" />
-                        <input ref={inputPassword} type="password" name="password" defaultValue="" />
-
-                        <button
-                            onClick={() => loginHandlerThunk()}>
-                            login</button><br />
-                        <button
-                            onClick={() => signInHandlerThunk()}>
-                            Sign In</button><br />
-
-                        logedStatus <br />
-                        {`${logedStatus}`}<br />
-                        pingStatus <br />
-                        {`${JSON.stringify(pingStatus)}`}<br />
+        <div className={cn(s.container)}>
+            <h1 className={cn(s.header__main)}>Barbarissimo</h1>
+            <div className={cn(s.form__wrapper)}>
+                <h2 className={cn(s.form__header)}>LogIn or SignUp</h2>
+                <form ref={authForm} id="authForm">
+                    <div className={cn(s.form__inp_wrapper)}>
+                        <label htmlFor="emailInputId">
+                            <span>
+                                email
+                            </span>
+                            <input required className={cn(s.form__input)} ref={inputEmail} type="text" name="email" id="emailInputId" defaultValue="" placeholder="email" />
+                        </label>
+                        <label htmlFor="passwordInputId">
+                            <span>
+                                password
+                            </span>
+                            <input required className={cn(s.form__input)} ref={inputPassword} type="password" name="password" id="passwordInputId" defaultValue="" placeholder="password" />
+                        </label>
                     </div>
-                </div>
+
+                    <div className={cn(s.form__btn_wrapper)}>
+                        <button
+                            className={cn(s.form__button)}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                authForm.current.checkValidity() ? loginHandlerThunk() : authForm.current.reportValidity();
+                            }}>
+                            logIn</button>
+                        <NavLink className={cn(s.form__button, s.form__button_unfilled)} to="/signup">
+                            SignUp
+                        </NavLink>
+                    </div>
+                </form>
             </div>
-        </div >
+        </div>
     );
 };

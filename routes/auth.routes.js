@@ -24,7 +24,7 @@ router.post(
                 })
             }
 
-            const { email, password } = req.body;
+            const { nick, email, password } = req.body;
 
             const candidate = await User.findOne({ email });
 
@@ -34,13 +34,13 @@ router.post(
 
             const hashedPassword = await bcrypt.hash(password, 7);
 
-            const user = new User({ email, password: hashedPassword, role: 'user' });
+            const user = new User({ userName: nick, email, password: hashedPassword, role: 'user' });
 
             console.log(`SAVING... ${user}`)
 
             await user.save();
 
-            res.status(201).json({ status: `ok`, message: `User ${email} created.` });
+            res.status(201).json({ status: `ok`, message: `User ${nick} created.` });
 
         } catch (error) {
             res.status(500).json({ status: `error`, message: `Server error: ${error.message}` })
@@ -86,7 +86,9 @@ router.post(
                 { expiresIn: '24h' }
             );
 
-            res.json({ token, userId: user.id, userName: email.split('@')[0] })
+            const userNickName = user.userName || "Unknown Racoon";
+
+            res.json({ token, userId: user.id, userName: userNickName, email: email });
 
         } catch (error) {
             res.status(500).json({ message: `Server error: ${error.message}` })

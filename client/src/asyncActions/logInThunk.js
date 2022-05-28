@@ -16,7 +16,9 @@ export const logInThunk = (body) => {
                     userId: json.userId,
                     userName: json.userName
                 }));
-                messageSimple(json.message);
+                // messageSimple(json.message);
+                console.dir(json)
+                messageSimple(`Wellcome ${json.userName}`);
                 dispatch(logIn(json));
             })
     }

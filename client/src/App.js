@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import s from './outline.module.css';
+// import s from './outline.module.css';
 import { useRoutes } from './routes';
 import 'materialize-css';
 import cn from 'classnames';
@@ -14,7 +14,7 @@ function App() {
 
   return (
       <Router>
-        <div className={cn("container", "hoverable", "z-depth-2", s.outlineRed)}>
+        <div className={cn()}>
           {routes}
         </div>
       </Router>
