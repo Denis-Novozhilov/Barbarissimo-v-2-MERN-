@@ -3,7 +3,7 @@ import { messageSimple } from "../hooks/messageSimple";
 import { signIn } from "../toolkitRedux/authSlice";
 import { logInThunk } from "./logInThunk";
 
-export const signInThunk = (body) => {
+export const signUpThunk = (body) => {
 
     const method = "POST";
     const headers = { "Content-Type": "application/json" };
@@ -12,6 +12,7 @@ export const signInThunk = (body) => {
         fetch(REGISTRATION_URL, { method, body, headers })
             .then(response => response.json())
             .then(json => {
+                console.dir(json)
                 dispatch(signIn(json));
                 messageSimple(JSON.stringify(json.message))
                 if (json.status === 'ok') {

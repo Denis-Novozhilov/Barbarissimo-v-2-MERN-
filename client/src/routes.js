@@ -5,6 +5,7 @@ import { Lobby } from "./pages/Lobby";
 import { CreatePhrase } from "./pages/CreatePhrase";
 import { PhraseDetailPage } from "./pages/PhraseDetailPage";
 import { PhrasesListPage } from "./pages/PhrasesListPage";
+import { SignUpPage } from "./pages/SignUpPage";
 
 export const useRoutes = isAuthenticated => {
 
@@ -16,13 +17,15 @@ export const useRoutes = isAuthenticated => {
                     <PhrasesListPage />
                 </Route>
 
-                <Route path="/create" exact>
+                <Route path="/create-phrase" exact>
                     <CreatePhrase />
                 </Route>
 
                 <Route path="/lobby" exact>
                     <Lobby />
                 </Route>
+
+
 
                 <Route path="/phrases-detail/:id">
                     <PhraseDetailPage />
@@ -38,6 +41,9 @@ export const useRoutes = isAuthenticated => {
             <Route path="/" exact>
                 <AuthPage />
             </Route>
+            <Route path="/signup" exact>
+                    <SignUpPage />
+                </Route>
             <Redirect to="/" />
         </Switch>
     );

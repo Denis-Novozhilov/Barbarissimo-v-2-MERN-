@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap');
+
+* {
+    color: rgba(0, 139, 139, 1);
+    font-family: 'Roboto';
+}
+
+body {
+    background-color: black;
+}
+
+.container {
+    width: 96vw;
+    margin: 2vh auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10vh 1vw 10px;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+
+    -webkit-box-shadow: 0px 10px 30px 20px rgba(0, 139, 139, 0.2);
+    -moz-box-shadow: 0px 10px 30px 20px rgba(0, 139, 139, 0.2);
+    box-shadow: 0px 10px 30px 20px rgba(0, 139, 139, 0.2);
+    border-radius: 20px;
+}
+
+.common__button {
+    /* width: 100%; */
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    background-color: rgba(0, 139, 139, 0.8);
+    text-decoration: none;
+    display: flex;
+    font-family: 'Roboto';
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.common__button:disabled {
+    background-color: rgba(0, 139, 139, 0.35);
+}
+
+
+.wheel__container {
+    transform-style: preserve-3d;
+    min-width: 250px;
+    height: 140px;
+}
+.wheel {
+    border-radius: 16px;
+    min-width: inherit;
+    height: inherit;
+    transform-style: preserve-3d;
+    transform: perspective(800px) rotateY(0deg) rotateX(0deg) translateZ(0px);
+    /* transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px); */
+}
+
+.wheel__item {
+    position: absolute;
+    top: 48px;
+    left: 37px;
+    width: 70%;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transform-style: preserve-3d;
+    outline: 3px solid rgba(0, 139, 139, 1);
+    border-radius: 2px;
+    background-color: rgba(0, 139, 139, 0.95);
+
+    color: white;
+
+    backface-visibility: hidden;
+    transition: transform .35s ease-in-out;
+}
+
+.wheel__item span {
+    color: white;
+}
+.wheel__item input {
+    margin-left: 10px;
+}
+
+.picked {
+    outline: 3px solid yellow;
+    --anglP: calc((135deg) * var(--i));
+    transform: perspective(300px) rotateY(0deg) rotateX(calc(15deg + var(--anglP))) translateZ(50px);
+}
+
+.wheel__item_1 {}
+
+.wheel__item_2 {}
+
+.wheel__item_3 {}
+
+.wheel__item_4 {}
+
+.wheel__item_5 {}
+
+.wheel__item_6 {}
+
+.wheel__item_7 {}
+
+.wheel__item_8 {}
+
+
+.wheel__controll {
+    width: 100%;
+    height: 35%;
+    position: absolute;
+    transform: perspective(90px) translateZ(1px);
+}
+
+.wheel__controll_up {
+    border-radius: 14px 14px 0 0;
+    top:0;
+    background-color: rgba(0, 128, 0, 0.493);
+}
+
+.wheel__controll_down {
+    border-radius: 0 0 14px 14px;
+    bottom: 0;
+    background-color: rgba(128, 0, 128, 0.493);
+}
