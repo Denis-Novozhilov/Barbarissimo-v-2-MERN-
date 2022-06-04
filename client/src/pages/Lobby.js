@@ -133,6 +133,10 @@ export const Lobby = () => {
 
 
     const touchHandler = (e) => {
+        
+        if (e.nativeEvent.pointerType && e.nativeEvent.pointerType === "touch") {
+            blockScrollForSec();
+        }
 
         e.persist();
 
@@ -144,8 +148,6 @@ export const Lobby = () => {
 
         if (e_type === 'touchstart') {
 
-            // [] improve
-            // document.body.classList.add(s.blocked_scroll);
 
             wheelElemChilds.current = e.target.dataset.identity === "wheel_1" ?
                 [...wheelFieldset1.current.childNodes] :
@@ -214,6 +216,23 @@ export const Lobby = () => {
         }
     }
 
+    const scrollBlockTimeout = useRef({});
+
+    const blockScrollForSec = () => {
+
+        if (JSON.stringify(scrollBlockTimeout.current) !== '{}') {
+            clearTimeout(scrollBlockTimeout.current);
+        }
+
+        const resetScrollTimeout = setTimeout(() => {
+            document.body.classList.remove(s.blocked_scroll);
+        }, 1500);
+
+        scrollBlockTimeout.current = resetScrollTimeout;
+        
+        document.body.classList.add(s.blocked_scroll);
+    }
+
     useEffect(() => {
         initialWheelRotate(wheelFieldset1.current, 40, 600, 600);
         initialWheelRotate(wheelFieldset2.current, 40, 600, 600);
@@ -238,6 +257,7 @@ export const Lobby = () => {
                         onClick={touchHandler}
                         onTouchStart={touchHandler}
                         onTouchEnd={touchHandler}
+                        onTouchMove={blockScrollForSec}
                         className={cn(s.wheel__container)}>
                         <div
                             data-identity="wheel_1"
@@ -367,6 +387,7 @@ export const Lobby = () => {
                         onClick={touchHandler}
                         onTouchStart={touchHandler}
                         onTouchEnd={touchHandler}
+                        onTouchMove={blockScrollForSec}
                         className={cn(s.wheel__container)}>
 
                         <div data-identity="wheel_2"
