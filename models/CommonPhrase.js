@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
-    Russian: { type: String, required: true},
-    Spanish: { type: String, required: true},
-    English: { type: String, required: true},
-    German: { type: String, required: true},
-    Additional: { type: String}
+    russian: { type: String, required: true},
+    spanish: { type: String, required: true},
+    english: { type: String, required: true},
+    german: { type: String, required: true},
+    additional: { type: String}
 });
 
 module.exports = model('CommonPhrase', schema);

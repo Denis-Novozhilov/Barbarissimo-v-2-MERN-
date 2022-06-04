@@ -6,6 +6,7 @@ import { CreatePhrase } from "./pages/CreatePhrase";
 import { PhraseDetailPage } from "./pages/PhraseDetailPage";
 import { PhrasesListPage } from "./pages/PhrasesListPage";
 import { SignUpPage } from "./pages/SignUpPage";
+import { GameRoom } from "./pages/GameRoom";
 
 export const useRoutes = isAuthenticated => {
 
@@ -19,6 +20,10 @@ export const useRoutes = isAuthenticated => {
 
                 <Route path="/create-phrase" exact>
                     <CreatePhrase />
+                </Route>
+
+                <Route path="/game-room" exact>
+                    <GameRoom />
                 </Route>
 
                 <Route path="/lobby" exact>

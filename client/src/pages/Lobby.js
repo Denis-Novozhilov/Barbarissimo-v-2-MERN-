@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CREATE_USER_PHRASE, STORAGE_AUTHENTICATION } from '../configuration/config';
 import { logOut } from '../toolkitRedux/authSlice';
@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { messageSimple } from "../hooks/messageSimple";
 import cn from 'classnames';
 import s from './Lobby.module.css'
+import { setGameSettings } from '../toolkitRedux/gameSettingsSlice';
 
 // import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
 
@@ -34,6 +35,11 @@ export const Lobby = () => {
     const touchEndY = useRef(0);
     const wheelElemChilds = useRef([]);
 
+    // scrollBlock for ClearTimeout
+    const scrollBlockTimeout = useRef({});
+
+    const history = useHistory();
+
     const dispatch = useDispatch();
 
     const logoutHandlerThunk = () => {
@@ -41,20 +47,27 @@ export const Lobby = () => {
         dispatch(logOut());
     }
 
-    const onSubmitHandler = (e) => {
+    const startGame = () => {
+        dataF = new FormData(langForm.current);
+        const nativeLang = dataF.get('lang_native');
+        const learnedLang = dataF.get('lang_learned');
+        const phraseSetting = dataF.get('phrase_setting');
 
-        dataF = new FormData(langForm.current)
-        console.log(`dataF`)
-        console.dir(dataF)
-        console.log('lang_native', dataF.get('lang_native'))
-        console.log('lang_learned', dataF.get('lang_learned'))
-        console.log('phrase_setting', dataF.get('phrase_setting'))
-        /*
-            dataF
-            FormData
-            lang_native rus
-            lang_learned ger
-        */
+        if (nativeLang && learnedLang && phraseSetting) {
+
+            const settings = {nativeLang, learnedLang, phraseSetting};
+            console.log('settings',settings)
+            dispatch(setGameSettings(settings))
+
+            // redirect to game_room.js
+            // <NavLink className={cn(s.common__button)} to="/create-phrase">/create-phrase</NavLink>
+            
+            history.push("/game-room");
+
+        } else {
+            messageSimple('choose right settings');
+            messageSimple('something wrong');
+        }
     }
 
 
@@ -216,7 +229,7 @@ export const Lobby = () => {
         }
     }
 
-    const scrollBlockTimeout = useRef({});
+    
 
     const blockScrollForSec = () => {
 
@@ -592,25 +605,22 @@ export const Lobby = () => {
                     </fieldset>
                 </form>
 
-                <button
-                    onClick={onSubmitHandler}
-                    className={cn(s.common__button)}>
-                    submit Form
-                </button>
-
                 <button className={cn(s.common__button)}
                     disabled={!validityState}
-                >
+                    onClick={startGame}>
                     Start new Game
-                </button>
-
-                <button className={cn(s.common__button)}>
-                    Create new Phrases Set
                 </button>
 
                 <button className={cn(s.common__button)}
                     onClick={() => logoutHandlerThunk()}>
-                    logOut</button><br />
+                    logOut
+                </button>
+
+
+                {/* <button className={cn(s.common__button)}>
+                    Create new Phrases Set
+                </button>
+
                 <h5>Get_all_app_users_from_mongoDB</h5>
                 <ul>
                     {mdbUsers && mdbUsers.length > 0 ?
@@ -634,7 +644,7 @@ export const Lobby = () => {
                                 setMdbUsers((prev) => [...prev, ...arr])
                             })
                     }}
-                >get_from_server</button>
+                >get_from_server</button> */}
 
 
                 {/* <h5>links:</h5>
@@ -647,8 +657,3 @@ export const Lobby = () => {
         </>
     )
 }
-
-
-// [] исправить съехавшие wheel_elements
-// [] Consider adding an error boundary to your tree to customize error handling behavior.
-// Visit https://fb.me/react-error-boundaries to learn more about error boundaries.

@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import toolkitSlice from "./toolkitSlice";
+import gameSettingsSlice from "./gameSettingsSlice";
 import authSlice from "./authSlice";
+import toolkitSlice from "./toolkitSlice";
 
 const rootReducer = combineReducers({
     toolkit_reducer: toolkitSlice,
+    game_settings_reducer: gameSettingsSlice,
     auth_reducer: authSlice 
 })
 
