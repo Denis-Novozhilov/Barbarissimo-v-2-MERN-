@@ -22,7 +22,8 @@ export const Lobby = () => {
     const learnedLang = useRef("none");
     const validity = useRef(false);
     const [validityState, setValidityState] = useState(false);
-    const [nativeLangState, setNativeLangState] = useState(`${dataF.get('lang_native')}`);
+    // const [nativeLangState, setNativeLangState] = useState(`${dataF.get('lang_native')}`);
+    const [nativeLangState, setNativeLangState] = useState(`eng`);
 
     // wheel's variables
     const counterWheel1 = useRef(0);
@@ -60,9 +61,9 @@ export const Lobby = () => {
 
     const wheelRotate = (wheelN, direction, wheelElem, counterDelta) => {
 
-        const counterVar = wheelN === 1 ? 
-            counterWheel1 : 
-            counterWheel2 ;
+        const counterVar = wheelN === 1 ?
+            counterWheel1 :
+            counterWheel2;
 
         counterVar.current = direction === "up" ?
             counterVar.current + counterDelta :
@@ -113,7 +114,7 @@ export const Lobby = () => {
 
         if (nativeLang.current === learnedLang.current) {
             validity.current = false;
-            setValidityState(validity.current);            
+            setValidityState(validity.current);
         } else {
             validity.current = langForm.current.checkValidity();
             setValidityState(validity.current);
@@ -173,14 +174,14 @@ export const Lobby = () => {
                     rotateDirection = e.target.dataset.direction;
                     inertia = 1;
                     e.target.style.display = 'none';
-                    const subElem = document.elementFromPoint([...e.changedTouches][0].clientX,[...e.changedTouches][0].clientY);
+                    const subElem = document.elementFromPoint([...e.changedTouches][0].clientX, [...e.changedTouches][0].clientY);
                     subElem.click();
                     e.target.style.display = 'block';
                 } else if (e.target.dataset.role && e.target.dataset.role === "wheel_2_conroller") {
                     rotateDirection = e.target.dataset.direction;
                     inertia = 1;
                     e.target.style.display = 'none';
-                    const subElem = document.elementFromPoint([...e.changedTouches][0].clientX,[...e.changedTouches][0].clientY);
+                    const subElem = document.elementFromPoint([...e.changedTouches][0].clientX, [...e.changedTouches][0].clientY);
                     subElem.click();
                     e.target.style.display = 'block';
                 } else {
@@ -214,8 +215,8 @@ export const Lobby = () => {
     }
 
     useEffect(() => {
-        initialWheelRotate(wheelFieldset1.current, 40, 500, 500);
-        initialWheelRotate(wheelFieldset2.current, 40, 500, 500);
+        initialWheelRotate(wheelFieldset1.current, 40, 600, 600);
+        initialWheelRotate(wheelFieldset2.current, 40, 600, 600);
     }, [])
 
     return (
@@ -266,13 +267,9 @@ export const Lobby = () => {
                                     "--anglP": "calc((135deg) * var(--i))",
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
-                                htmlFor="eng_1_1">
-                                <span data-identity="wheel_1"
-                                >English</span>
-                                <input
-                                    required
-                                    data-identity="wheel_1"
-                                    type="radio" value="eng" id="eng_1_1" name="lang_native" />
+                                htmlFor="rus_1_1">
+                                <input data-identity="wheel_1" type="radio" value="rus" id="rus_1_1" name="lang_native" />
+                                <span className={cn(s.wheel__item_text)} data-identity="wheel_1">Russian</span>
                             </label>
 
                             <label
@@ -284,8 +281,8 @@ export const Lobby = () => {
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
                                 htmlFor="ger_1_1">
-                                <span data-identity="wheel_1">German</span>
                                 <input data-identity="wheel_1" type="radio" value="ger" id="ger_1_1" name="lang_native" />
+                                <span className={cn(s.wheel__item_text)} data-identity="wheel_1">German</span>
                             </label>
 
                             <label data-identity="wheel_1"
@@ -295,9 +292,9 @@ export const Lobby = () => {
                                     "--anglP": "calc((135deg) * var(--i))",
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
-                                htmlFor="rus_1_1">
-                                <span data-identity="wheel_1">Russian</span>
-                                <input data-identity="wheel_1" type="radio" value="rus" id="rus_1_1" name="lang_native" />
+                                htmlFor="eng_1_1">
+                                <input required data-identity="wheel_1" type="radio" value="eng" id="eng_1_1" name="lang_native" defaultChecked />
+                                <span className={cn(s.wheel__item_text)} data-identity="wheel_1">English</span>
                             </label>
 
                             <label data-identity="wheel_1"
@@ -308,8 +305,8 @@ export const Lobby = () => {
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
                                 htmlFor="spa_1_1">
-                                <span data-identity="wheel_1">Spanish</span>
                                 <input data-identity="wheel_1" type="radio" value="spa" id="spa_1_1" name="lang_native" />
+                                <span className={cn(s.wheel__item_text)} data-identity="wheel_1">Spanish</span>
                             </label>
 
                             <label data-identity="wheel_1"
@@ -319,9 +316,9 @@ export const Lobby = () => {
                                     "--anglP": "calc((135deg) * var(--i))",
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
-                                htmlFor="eng_1_2">
-                                <span data-identity="wheel_1">English</span>
-                                <input data-identity="wheel_1" type="radio" value="eng" id="eng_1_2" name="lang_native" />
+                                htmlFor="rus_1_2">
+                                <input data-identity="wheel_1" type="radio" value="rus" id="rus_1_2" name="lang_native" />
+                                <span className={cn(s.wheel__item_text)} data-identity="wheel_1">Russian</span>
                             </label>
 
                             <label data-identity="wheel_1"
@@ -332,8 +329,8 @@ export const Lobby = () => {
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
                                 htmlFor="ger_1_2">
-                                <span data-identity="wheel_1">German</span>
                                 <input data-identity="wheel_1" type="radio" value="ger" id="ger_1_2" name="lang_native" />
+                                <span className={cn(s.wheel__item_text)} data-identity="wheel_1">German</span>
                             </label>
 
                             <label data-identity="wheel_1"
@@ -343,9 +340,10 @@ export const Lobby = () => {
                                     "--anglP": "calc((135deg) * var(--i))",
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
-                                htmlFor="rus_1_2">
-                                <span data-identity="wheel_1">Russian</span>
-                                <input data-identity="wheel_1" type="radio" value="rus" id="rus_1_2" name="lang_native" />
+                                htmlFor="eng_1_2">
+                                <input data-identity="wheel_1" type="radio" value="eng" id="eng_1_2" name="lang_native" />
+                                <span className={cn(s.wheel__item_text)} data-identity="wheel_1">English</span>
+
                             </label>
 
                             <label data-identity="wheel_1"
@@ -356,8 +354,8 @@ export const Lobby = () => {
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
                                 htmlFor="spa_1_2">
-                                <span data-identity="wheel_1">Spanish</span>
                                 <input data-identity="wheel_1" type="radio" value="spa" id="spa_1_2" name="lang_native" />
+                                <span className={cn(s.wheel__item_text)} data-identity="wheel_1">Spanish</span>
                             </label>
                         </fieldset>
                     </div>
@@ -389,22 +387,21 @@ export const Lobby = () => {
                             className={cn(s.wheel)}>
 
                             <label data-identity="wheel_2"
-                                className={cn(s.wheel__item, { [s.wheel__item_disabled]: isNative('eng') }, s.wheel__item_1)}
+                                className={cn(s.wheel__item, { [s.wheel__item_disabled]: isNative('rus') }, s.wheel__item_1)}
                                 style={{
                                     "--i": 1,
                                     "--anglP": "calc((135deg) * var(--i))",
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
-                                htmlFor="eng_2_1">
-                                <span data-identity="wheel_2">English</span>
-                                <input 
-                                    required
-                                    data-identity="wheel_2"
+                                htmlFor="rus_2_1">
+                                <input data-identity="wheel_2"
                                     type="radio"
-                                    value="eng"
-                                    id="eng_2_1"
+                                    value="rus"
+                                    id="rus_2_1"
                                     name="lang_learned"
-                                    disabled={isNative('eng')} />
+                                    disabled={isNative('rus')} />
+                                <span className={cn(s.wheel__item_text)}
+                                    data-identity="wheel_2">Russian</span>
                             </label>
 
                             <label data-identity="wheel_2"
@@ -415,30 +412,35 @@ export const Lobby = () => {
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
                                 htmlFor="ger_2_1">
-                                <span data-identity="wheel_2">German</span>
                                 <input data-identity="wheel_2"
                                     type="radio"
                                     value="ger"
                                     id="ger_2_1"
                                     name="lang_learned"
                                     disabled={isNative('ger')} />
+                                <span className={cn(s.wheel__item_text)}
+                                    data-identity="wheel_2">German</span>
                             </label>
 
                             <label data-identity="wheel_2"
-                                className={cn(s.wheel__item, { [s.wheel__item_disabled]: isNative('rus') }, s.wheel__item_3)}
+                                className={cn(s.wheel__item, { [s.wheel__item_disabled]: isNative('eng') }, s.wheel__item_3)}
                                 style={{
                                     "--i": 3,
                                     "--anglP": "calc((135deg) * var(--i))",
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
-                                htmlFor="rus_2_1">
-                                <span data-identity="wheel_2">Russian</span>
-                                <input data-identity="wheel_2"
+                                htmlFor="eng_2_1">
+                                <input
+                                    required
+                                    data-identity="wheel_2"
                                     type="radio"
-                                    value="rus"
-                                    id="rus_2_1"
+                                    value="eng"
+                                    id="eng_2_1"
                                     name="lang_learned"
-                                    disabled={isNative('rus')} />
+                                    disabled={isNative('eng')} />
+                                <span className={cn(s.wheel__item_text)}
+                                    data-identity="wheel_2">English</span>
+
                             </label>
 
                             <label data-identity="wheel_2"
@@ -449,30 +451,32 @@ export const Lobby = () => {
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
                                 htmlFor="spa_2_1">
-                                <span data-identity="wheel_2">Spanish</span>
                                 <input data-identity="wheel_2"
                                     type="radio"
                                     value="spa"
                                     id="spa_2_1"
                                     name="lang_learned"
                                     disabled={isNative('spa')} />
+                                <span className={cn(s.wheel__item_text)}
+                                    data-identity="wheel_2">Spanish</span>
                             </label>
 
                             <label data-identity="wheel_2"
-                                className={cn(s.wheel__item, { [s.wheel__item_disabled]: isNative('eng') }, s.wheel__item_5)}
+                                className={cn(s.wheel__item, { [s.wheel__item_disabled]: isNative('rus') }, s.wheel__item_5)}
                                 style={{
                                     "--i": 5,
                                     "--anglP": "calc((135deg) * var(--i))",
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
-                                htmlFor="eng_2_2">
-                                <span data-identity="wheel_2">English</span>
+                                htmlFor="rus_2_2">
                                 <input data-identity="wheel_2"
                                     type="radio"
-                                    value="eng"
-                                    id="eng_2_2"
+                                    value="rus"
+                                    id="rus_2_2"
                                     name="lang_learned"
-                                    disabled={isNative('eng')} />
+                                    disabled={isNative('rus')} />
+                                <span className={cn(s.wheel__item_text)}
+                                    data-identity="wheel_2">Russian</span>
                             </label>
 
                             <label data-identity="wheel_2"
@@ -483,30 +487,33 @@ export const Lobby = () => {
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
                                 htmlFor="ger_2_2">
-                                <span data-identity="wheel_2">German</span>
                                 <input data-identity="wheel_2"
                                     type="radio"
                                     value="ger"
                                     id="ger_2_2"
                                     name="lang_learned"
                                     disabled={isNative('ger')} />
+                                <span className={cn(s.wheel__item_text)}
+                                    data-identity="wheel_2">German</span>
                             </label>
 
                             <label data-identity="wheel_2"
-                                className={cn(s.wheel__item, { [s.wheel__item_disabled]: isNative('rus') }, s.wheel__item_7)}
+                                className={cn(s.wheel__item, { [s.wheel__item_disabled]: isNative('eng') }, s.wheel__item_7)}
                                 style={{
                                     "--i": 7,
                                     "--anglP": "calc((135deg) * var(--i))",
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
-                                htmlFor="rus_2_2">
-                                <span data-identity="wheel_2">Russian</span>
+                                htmlFor="eng_2_2">
                                 <input data-identity="wheel_2"
                                     type="radio"
-                                    value="rus"
-                                    id="rus_2_2"
+                                    value="eng"
+                                    id="eng_2_2"
                                     name="lang_learned"
-                                    disabled={isNative('rus')} />
+                                    disabled={isNative('eng')} />
+                                <span className={cn(s.wheel__item_text)}
+                                    data-identity="wheel_2">English</span>
+
                             </label>
 
                             <label data-identity="wheel_2"
@@ -517,13 +524,14 @@ export const Lobby = () => {
                                     transform: `perspective(300px) rotateX(calc(135deg * var(--i))) translateZ(50px)`
                                 }}
                                 htmlFor="spa_2_2">
-                                <span data-identity="wheel_2">Spanish</span>
                                 <input data-identity="wheel_2"
                                     type="radio"
                                     value="spa"
                                     id="spa_2_2"
                                     name="lang_learned"
                                     disabled={isNative('spa')} />
+                                <span className={cn(s.wheel__item_text)}
+                                    data-identity="wheel_2">Spanish</span>
                             </label>
                         </fieldset>
                     </div>
@@ -531,31 +539,31 @@ export const Lobby = () => {
                     <h2 className={cn(s.lobby__header_sub2)}>include phrases:</h2>
                     <fieldset className={cn(s.fieldset_sub)}>
                         <label htmlFor="phrase_setting_1">
-                            <input 
+                            <input
                                 type="radio"
-                                name="phrase_setting" 
+                                name="phrase_setting"
                                 id="phrase_setting_1"
-                                value="common" defaultChecked/>
+                                value="common" defaultChecked />
                             <div className={cn(s.fieldset_sub__item)}>
                                 <span>common</span>
                             </div>
                         </label>
                         <label htmlFor="phrase_setting_2">
-                            <input 
+                            <input
                                 type="radio"
-                                name="phrase_setting" 
+                                name="phrase_setting"
                                 id="phrase_setting_2"
-                                value="my_own"/>
+                                value="my_own" />
                             <div className={cn(s.fieldset_sub__item)}>
                                 <span>my&nbsp;own</span>
                             </div>
                         </label>
                         <label htmlFor="phrase_setting_3">
-                            <input 
+                            <input
                                 type="radio"
-                                name="phrase_setting" 
+                                name="phrase_setting"
                                 id="phrase_setting_3"
-                                value="all"/>
+                                value="all" />
                             <div className={cn(s.fieldset_sub__item)}>
                                 <span>all</span>
                             </div>
@@ -570,7 +578,7 @@ export const Lobby = () => {
                 </button>
 
                 <button className={cn(s.common__button)}
-                        disabled={!validityState}
+                    disabled={!validityState}
                 >
                     Start new Game
                 </button>

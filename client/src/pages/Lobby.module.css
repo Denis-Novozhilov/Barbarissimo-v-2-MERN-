@@ -97,9 +97,11 @@ body {
     width: 70%;
     height: 40px;
 
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
+    /* text-align: center; */
+    /* padding: 10px 36px; */
 
     transform-style: preserve-3d;
     outline: 3px solid rgba(0, 139, 139, 1);
@@ -112,9 +114,9 @@ body {
     transition: transform .6s ease-out;
 }
 
-.wheel:focus {
+/* .wheel:focus {
     outline: 3px solid yellow;
-}
+} */
 
 .wheel__item_disabled {
     background-color: rgb(0 111 111);
@@ -124,27 +126,37 @@ body {
     color: rgb(43, 184, 184) !important;
 }
 
-.wheel__item_disabled input {
-    /* block pointer events */
-    /* pointer-events: none; */
-    /* display: none; */
-    /* background-color: rgba(0, 139, 139, 0.35); */
+.wheel__item input {
+    visibility: hidden;
 }
-
-.wheel__item span {
-    color: white;
+.wheel__item_text {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: block;
+    width: 155px;
+    height: 20px;
+    text-align: center;
+    transition: transform .2s ease-out;
+    color:rgba(43, 184, 184,1);
     text-transform: lowercase;
 }
+.wheel__item input:checked + .wheel__item_text {
+    color: white;
+    transform: scale(1.4);
+}
+
+.wheel__item_disabled .wheel__item_text {
+    transform: scale(1) !important;
+}
+
+
 
 .wheel__item input {
     margin-left: 10px;
 }
 
-.picked {
-    outline: 3px solid yellow;
-    --anglP: calc((135deg) * var(--i));
-    transform: perspective(300px) rotateY(0deg) rotateX(calc(15deg + var(--anglP))) translateZ(50px);
-}
+
 
 .wheel__item_1 {}
 
@@ -173,13 +185,11 @@ body {
 .wheel__controll_up {
     border-radius: 14px 14px 0 0;
     top: 0;
-    /* background-color: rgba(0, 128, 0, 0.493); */
 }
 
 .wheel__controll_down {
     border-radius: 0 0 14px 14px;
     bottom: 0;
-    /* background-color: rgba(128, 0, 128, 0.493); */
 }
 
 .blocked_scroll {
@@ -189,8 +199,8 @@ body {
 }
 
 /* [] improved while touchMove */
-/* 
-body {
+
+/* body {
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain !important;
