@@ -13,25 +13,25 @@ import s from './Lobby.module.css'
 export const Lobby = () => {
 
     const userName = useSelector(state => state.auth_reducer.userName);
-    const langForm = useRef();
-    const wheelFieldset1 = useRef();
-    const wheelFieldset2 = useRef();
-    const testHeaderLog = useRef();
+
     const [mdbUsers, setMdbUsers] = useState([]);
 
-    // const [testStatus, setTestStatus] = useState(`init_0\n_`);
-
+    const langForm = useRef();
     let dataF = new FormData(langForm.current);
-    const [nativeLang, setNativeLang] = useState(`${dataF.get('lang_native')}`);
+    const nativeLang = useRef("none");
+    const learnedLang = useRef("none");
+    const validity = useRef(false);
+    const [validityState, setValidityState] = useState(false);
+    const [nativeLangState, setNativeLangState] = useState(`${dataF.get('lang_native')}`);
 
-
-    let counterWheel1 = useRef(0);
-    let counterWheel2 = useRef(0);
-
-    let touchStartY = useRef(0);
-    let touchEndY = useRef(0);
-
-    let wheelElemChilds = useRef([]);
+    // wheel's variables
+    const counterWheel1 = useRef(0);
+    const counterWheel2 = useRef(0);
+    const wheelFieldset1 = useRef();
+    const wheelFieldset2 = useRef();
+    const touchStartY = useRef(0);
+    const touchEndY = useRef(0);
+    const wheelElemChilds = useRef([]);
 
     const dispatch = useDispatch();
 
@@ -47,6 +47,13 @@ export const Lobby = () => {
         console.dir(dataF)
         console.log('lang_native', dataF.get('lang_native'))
         console.log('lang_learned', dataF.get('lang_learned'))
+        console.log('phrase_setting', dataF.get('phrase_setting'))
+        /*
+            dataF
+            FormData
+            lang_native rus
+            lang_learned ger
+        */
     }
 
 
@@ -94,11 +101,23 @@ export const Lobby = () => {
     }
 
 
-    const isNative = (lang) => nativeLang === lang;
+    const isNative = (lang) => nativeLangState === lang;
 
     const onChangeHandler = () => {
+
         dataF = new FormData(langForm.current);
-        setNativeLang(`${dataF.get('lang_native')}`)
+
+        nativeLang.current = `${dataF.get('lang_native')}`;
+        setNativeLangState(nativeLang.current);
+        learnedLang.current = `${dataF.get('lang_learned')}`;
+
+        if (nativeLang.current === learnedLang.current) {
+            validity.current = false;
+            setValidityState(validity.current);            
+        } else {
+            validity.current = langForm.current.checkValidity();
+            setValidityState(validity.current);
+        }
     }
 
 
@@ -202,7 +221,7 @@ export const Lobby = () => {
     return (
         <>
             <div className={cn(s.container)}>
-                <h1>{userName}</h1>
+                <h1 className={cn(s.lobby__header)}>{userName}</h1>
 
 
 
@@ -213,9 +232,8 @@ export const Lobby = () => {
                     className={cn(s.wheel_form)}>
 
                     {/* WHEEL 1 */}
-                    <h2>Native laguage</h2>
-                    <div
-                        data-identity="wheel_1"
+                    <h2 className={cn(s.lobby__header_sub2)}>native laguage:</h2>
+                    <div data-identity="wheel_1"
                         onClick={touchHandler}
                         onTouchStart={touchHandler}
                         onTouchEnd={touchHandler}
@@ -252,6 +270,7 @@ export const Lobby = () => {
                                 <span data-identity="wheel_1"
                                 >English</span>
                                 <input
+                                    required
                                     data-identity="wheel_1"
                                     type="radio" value="eng" id="eng_1_1" name="lang_native" />
                             </label>
@@ -345,8 +364,7 @@ export const Lobby = () => {
 
 
                     {/* WHEEL 2 */}
-                    <h2>Learned laguage</h2>
-
+                    <h2 className={cn(s.lobby__header_sub2)}>learned laguage:</h2>
                     <div data-identity="wheel_2"
                         onClick={touchHandler}
                         onTouchStart={touchHandler}
@@ -379,7 +397,9 @@ export const Lobby = () => {
                                 }}
                                 htmlFor="eng_2_1">
                                 <span data-identity="wheel_2">English</span>
-                                <input data-identity="wheel_2"
+                                <input 
+                                    required
+                                    data-identity="wheel_2"
                                     type="radio"
                                     value="eng"
                                     id="eng_2_1"
@@ -508,6 +528,39 @@ export const Lobby = () => {
                         </fieldset>
                     </div>
 
+                    <h2 className={cn(s.lobby__header_sub2)}>include phrases:</h2>
+                    <fieldset className={cn(s.fieldset_sub)}>
+                        <label htmlFor="phrase_setting_1">
+                            <input 
+                                type="radio"
+                                name="phrase_setting" 
+                                id="phrase_setting_1"
+                                value="common" defaultChecked/>
+                            <div className={cn(s.fieldset_sub__item)}>
+                                <span>common</span>
+                            </div>
+                        </label>
+                        <label htmlFor="phrase_setting_2">
+                            <input 
+                                type="radio"
+                                name="phrase_setting" 
+                                id="phrase_setting_2"
+                                value="my_own"/>
+                            <div className={cn(s.fieldset_sub__item)}>
+                                <span>my&nbsp;own</span>
+                            </div>
+                        </label>
+                        <label htmlFor="phrase_setting_3">
+                            <input 
+                                type="radio"
+                                name="phrase_setting" 
+                                id="phrase_setting_3"
+                                value="all"/>
+                            <div className={cn(s.fieldset_sub__item)}>
+                                <span>all</span>
+                            </div>
+                        </label>
+                    </fieldset>
                 </form>
 
                 <button
@@ -516,28 +569,9 @@ export const Lobby = () => {
                     submit Form
                 </button>
 
-                <label htmlFor="langQuestion">
-                    <span>language of Question</span>
-                    {/* <select name="langQuestion" id="langQuestion">
-                        <option value="English" selected={true}>English</option>
-                        <option value="German">German</option>
-                        <option value="Russian">Russian</option>
-                        <option value="Spanish">Spanish</option>
-                    </select> */}
-                </label>
-
-                <label htmlFor="langAnswer">
-                    <span>language of Answer</span>
-                    {/* <select name="langAnswer" id="langAnswer">
-                        <option value="English">English</option>
-                        <option value="German" selected={true}>German</option>
-                        <option value="Russian">Russian</option>
-                        <option value="Spanish">Spanish</option>
-                    </select> */}
-                </label>
-
                 <button className={cn(s.common__button)}
-                    disabled>
+                        disabled={!validityState}
+                >
                     Start new Game
                 </button>
 
@@ -587,3 +621,5 @@ export const Lobby = () => {
 
 
 // [] исправить съехавшие wheel_elements
+// [] Consider adding an error boundary to your tree to customize error handling behavior.
+// Visit https://fb.me/react-error-boundaries to learn more about error boundaries.
