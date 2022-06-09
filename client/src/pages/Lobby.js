@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { CREATE_USER_PHRASE, STORAGE_AUTHENTICATION } from '../configuration/config';
+import { CREATE_USER_PHRASE, STORAGE_AUTHENTICATION, STORAGE_GAME_LANGUAGE_SETTINGS } from '../configuration/config';
 import { logOut } from '../toolkitRedux/authSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { messageSimple } from "../hooks/messageSimple";
@@ -59,8 +59,12 @@ export const Lobby = () => {
             console.log('settings',settings)
             dispatch(setGameSettings(settings))
 
-            // redirect to game_room.js
-            // <NavLink className={cn(s.common__button)} to="/create-phrase">/create-phrase</NavLink>
+            // localStorage.setItem(STORAGE_AUTHENTICATION, JSON.stringify({
+            localStorage.setItem(STORAGE_GAME_LANGUAGE_SETTINGS, JSON.stringify({
+                nativeLang,
+                learnedLang,
+                phraseSetting
+            }));
             
             history.push("/game-room");
 
@@ -117,7 +121,7 @@ export const Lobby = () => {
 
     const isNative = (lang) => nativeLangState === lang;
 
-    const onChangeHandler = () => {
+    const onChangeHandler = (e) => {
 
         dataF = new FormData(langForm.current);
 
@@ -128,7 +132,7 @@ export const Lobby = () => {
         if (nativeLang.current === learnedLang.current) {
             validity.current = false;
             setValidityState(validity.current);
-        } else {
+        } else if (nativeLang.current !== 'null' && learnedLang.current !== 'null') {
             validity.current = langForm.current.checkValidity();
             setValidityState(validity.current);
         }
@@ -229,7 +233,6 @@ export const Lobby = () => {
         }
     }
 
-    
 
     const blockScrollForSec = () => {
 
@@ -247,6 +250,13 @@ export const Lobby = () => {
     }
 
     useEffect(() => {
+
+        const data = JSON.parse(localStorage.getItem(STORAGE_GAME_LANGUAGE_SETTINGS));
+
+        if (data) {
+            history.push("/game-room");
+        }
+
         initialWheelRotate(wheelFieldset1.current, 40, 600, 600);
         initialWheelRotate(wheelFieldset2.current, 40, 600, 600);
     }, [])
@@ -604,7 +614,7 @@ export const Lobby = () => {
                         </label>
                     </fieldset>
                 </form>
-
+                
                 <button className={cn(s.common__button)}
                     disabled={!validityState}
                     onClick={startGame}>

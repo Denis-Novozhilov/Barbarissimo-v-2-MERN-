@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMockCustomersSlice } from '../asyncActions/customersMockSlice';
-import { CREATE_PHRASE_URL, CREATE_USER_PHRASE, GET_ALL_COMMON_PHRASES_URL, STORAGE_AUTHENTICATION } from '../configuration/config';
+import { CREATE_PHRASE_URL, CREATE_COMMON_PHRASE_URL, CREATE_USER_PHRASE, GET_ALL_COMMON_PHRASES_URL, STORAGE_AUTHENTICATION } from '../configuration/config';
 import { logOut } from '../toolkitRedux/authSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { messageSimple } from "../hooks/messageSimple";
 
+import { createCommonPhrase } from '../asyncActions/createCommonPhrase';
+import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
+
 import cn from 'classnames';
 import s from './GameRoom.module.scss';
 
-import { addTodo, decrement, deleteAllUsers, increment, removeAllTodos, removeLastTodos } from '../toolkitRedux/toolkitSlice';
 
 export const GameRoom = () => {
 
@@ -58,6 +60,20 @@ export const GameRoom = () => {
         //     .then(json => messageSimple(JSON.stringify(json.message)))
     };
 
+    const createPhraseHandler = () => {
+        const phrase = {
+            "russian": "russ_value",
+            "spanish": "span_value",
+            "english": "eng_value",
+            "german": "germ_value",
+            "additional": "nothing",
+            "id": "x_10"
+        };
+        // const requestBody = JSON.stringify({ [inputEmail.current.name]: inputEmail.current.value, [inputPassword.current.name]: inputPassword.current.value });
+        const requestBody = JSON.stringify(phrase);
+        createCommonPhrase(phrase)
+    }
+
     return (
         <>
             <div className={cn(s.container)}>
@@ -67,7 +83,23 @@ export const GameRoom = () => {
                 <h5>phraseSetting: {phraseSetting}</h5>
 
                 <h4>Create Common Phrase area:</h4>
-                <NavLink className={cn(s.common__button)} to="/create-phrase">/create-phrase</NavLink>
+
+                <button className={cn(s.common__button)}
+                    onClick={createPhraseHandler}
+                >create_common_phrase_N</button>
+
+                {/* <button className={cn(s.common__button)}
+                    onClick={async () => {
+                    fetch(CREATE_PHRASE_URL)
+                        .then(response => response.json())
+                        .then(json => {
+                            console.log(JSON.stringify(json));
+                            messageSimple(json.message);
+                        })
+                }}
+                >create_common_phrase_N</button> */}
+
+                <NavLink className={cn(s.common__button)} to="/create-phrase">go to /create-phrase</NavLink>
                 <button className={cn(s.common__button)}
                     onClick={() => logoutHandlerThunk()}>
                     logOut</button><br />
@@ -125,12 +157,8 @@ export const GameRoom = () => {
                         mdbPhrases.map(phrase => <li key={uuidv4()}>{JSON.stringify(phrase)}</li>) :
                         'empty'}
                 </ul>
-                <button onClick={async () => {
-                    fetch(CREATE_PHRASE_URL)
-                        .then(response => response.json())
-                        .then(json => console.log(JSON.stringify(json)))
-                }}
-                >create_common_phrase</button>
+
+
 
 
                 <button onClick={async () => {

@@ -13,28 +13,65 @@ router.get('/allcommonphrases',
 
 // api/game/createPhraseTest
 // router.get(
-    //     '/createPhraseTest',
-    //     [
-    //         check('email', 'Email is not correct').isEmail(),
-    //         check('password', 'Min password length - 6 symbols').isLength({ min: 6 })
-    //     ],
+//     '/createPhraseTest',
+//     [
+//         check('email', 'Email is not correct').isEmail(),
+//         check('password', 'Min password length - 6 symbols').isLength({ min: 6 })
+//     ],
 
-    
+
 // api/game/createPhraseTest
 router.get(
     '/createPhraseTest',
     async (req, res) => {
         try {
 
+            // 1[] get phrase wariants from body
+            // 2[] clear phrase from dots and commas
+            // 3[] check phrases in DB
+            // 4[] if ok - create new phrase
+
             // const { email, password } = req.body;
 
+            // const newPhrase = {
+            //     Russian: `Это интересно.`,
+            //     Spanish: `Es entretenido.`,
+            //     English: `It is entertaining.`,
+            //     German: `Das ist interessant.`,
+            //     Additional: `yep`
+            // };
+
             const newPhrase = {
-                Russian: `Это интересно.`,
-                Spanish: `Es entretenido.`,
-                English: `It is entertaining.`,
-                German: `Das ist interessant.`,
-                Additional: `yep`
+                russian: `Очередная третья фраза.`,
+                spanish: `Otra tercera frase`,
+                english: `Another third phrase`,
+                german: `Noch ein dritter Satz aaa`,
+                additional: `leam`
             };
+
+            // const { nick, email, password } = req.body;
+
+            const { russian, spanish, english, german } = newPhrase;
+            // CHEKING
+            const phraseCandidate_eng = await CommonPhrase.findOne({ english });
+            const phraseCandidate_rus = await CommonPhrase.findOne({ russian });
+            const phraseCandidate_spa = await CommonPhrase.findOne({ spanish });
+            const phraseCandidate_ger = await CommonPhrase.findOne({ german });
+
+            if (phraseCandidate_eng || phraseCandidate_rus || phraseCandidate_spa || phraseCandidate_ger) {
+                return res.status(400).json({
+                    status: `error`,
+                    message: `Phrase already exist. Try another words.`,
+                    phrase: {
+                        phraseCandidateEN: phraseCandidate_eng,
+                        phraseCandidateRU: phraseCandidate_rus,
+                        phraseCandidateSP: phraseCandidate_spa,
+                        phraseCandidateGR: phraseCandidate_ger
+                    }
+                })
+            }
+
+
 
             // const candidate = await User.findOne({ email });
             // if (candidate) {
@@ -49,7 +86,85 @@ router.get(
 
             await phrase.save();
 
-            res.status(201).json({ status: `ok`, message: `New Phrase ${phrase.Russian} created.` });
+            res.status(201).json({ status: `ok`, message: `New Phrase ${phrase.english} created.` });
+
+        } catch (error) {
+            res.status(500).json({ status: `error`, message: `[api/game/createPhraseTest] error: ${error.message}` })
+        }
+    });
+
+
+// api/game/createCommonPhrase
+router.post(
+    '/createCommonPhrase',
+    async (req, res) => {
+        try {
+
+            // 1[] get phrase wariants from body
+            const { russian, spanish, english, german } = req.body;
+
+            // 2[] clear phrase from dots and commas
+
+
+
+            // const newPhrase = {
+            //     Russian: `Это интересно.`,
+            //     Spanish: `Es entretenido.`,
+            //     English: `It is entertaining.`,
+            //     German: `Das ist interessant.`,
+            //     Additional: `yep`
+            // };
+
+            // const newPhrase = {
+            //     russian: `Очередная третья фраза.`,
+            //     spanish: `Otra tercera frase`,
+            //     english: `Another third phrase`,
+            //     german: `Noch ein dritter Satz aaa`,
+            //     additional: `leam`
+            // };
+
+            // const { nick, email, password } = req.body;
+
+            // const { russian, spanish, english, german } = newPhrase;
+            // CHEKING
+            // 3[] check phrases in DB
+            const phraseCandidate_eng = await CommonPhrase.findOne({ english });
+            const phraseCandidate_rus = await CommonPhrase.findOne({ russian });
+            const phraseCandidate_spa = await CommonPhrase.findOne({ spanish });
+            const phraseCandidate_ger = await CommonPhrase.findOne({ german });
+
+            if (phraseCandidate_eng || phraseCandidate_rus || phraseCandidate_spa || phraseCandidate_ger) {
+                return res.status(400).json({
+                    status: `error`,
+                    message: `Phrase already exist. Try another words.`,
+                    phrase: {
+                        phraseCandidateEN: phraseCandidate_eng,
+                        phraseCandidateRU: phraseCandidate_rus,
+                        phraseCandidateSP: phraseCandidate_spa,
+                        phraseCandidateGR: phraseCandidate_ger
+                    }
+                })
+            }
+
+            
+            // 4[] if ok - create new phrase
+            const newPhrase = { english, german, russian, spanish };
+
+
+            // const candidate = await User.findOne({ email });
+            // if (candidate) {
+            //     return res.status(400).json({ status: `error`, message: `Sign In error. Try another email.` })
+            // }
+
+            // const hashedPassword = await bcrypt.hash(password, 7);
+
+            const phrase = new CommonPhrase(newPhrase);
+
+            console.log(`SAVING... ${phrase}`)
+
+            await phrase.save();
+
+            res.status(201).json({ status: `ok`, message: `New Phrase ${phrase.english} created.` });
 
         } catch (error) {
             res.status(500).json({ status: `error`, message: `[api/game/createPhraseTest] error: ${error.message}` })
@@ -96,7 +211,7 @@ router.get(
 //             res.status(500).json({ status: `error`, message: `Server error: ${error.message}` })
 //         }
 //     });
-    
+
 /*
 // api/admin/test
 router.get('/test',

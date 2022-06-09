@@ -1,5 +1,5 @@
 /* @import "~materialize-css/dist/css/materialize.min.css"; */
-
+/* 
 * {
   padding: 0;
   margin: 0;
@@ -8,17 +8,18 @@
 
 .popup_common-wrapper {
   position: absolute;
-  right: 1vw;
-  top: 1vh;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .popup_common {
-  font-size: 1.5em;
+  font-size: .8em;
   background-color: rgba(0, 139, 139, 0.8);
   color: white;
   font-family: "Roboto";
   width: fit-content;
-  padding: 20px;
+  padding: 10px 20px;
   margin: 10px;
   border-radius: 8px;
   position: relative;
@@ -55,7 +56,7 @@
   100% {
     opacity: 0;
   }
-}
+} */
 
 /* 
 body {

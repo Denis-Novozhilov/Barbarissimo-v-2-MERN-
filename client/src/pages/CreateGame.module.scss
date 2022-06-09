@@ -1,0 +1,30 @@
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.common__button{
+    padding: 20px;
+}
+.form {
+    display: flex;
+    // flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.form__input {
+    width: 100%;
+    max-width: 500px;
+    height: 40px;
+    margin: 4px auto 0;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    text-align: start;
+    padding: 0 10px;
+    color: white;
+    font-family: 'Roboto';
+    background-color: rgba(0, 139, 139, 0.5);
+}

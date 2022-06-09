@@ -4,6 +4,65 @@
     /* color: rgba(0, 139, 139, 1); */
     font-family: 'Roboto';
 }
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.popup_common_wrapper {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup_common {
+    font-size: .8em;
+    background-color: rgba(0, 139, 139, 0.8);
+    color: white;
+    font-family: "Roboto";
+    width: fit-content;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 8px;
+    position: relative;
+}
+
+
+.anim_show {
+    opacity: 0;
+    transition: .2s;
+    animation: show .2s 1;
+    animation-fill-mode: forwards;
+}
+
+.anim_remove {
+    opacity: 1;
+    transition: .2s;
+    animation: remove .2s 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes remove {
+0% {
+    opacity: 1;
+}
+100% {
+    opacity: 0;
+}
+}
+
 /* * {
     color: rgba(0, 139, 139, 1);
     font-family: 'Roboto';
@@ -237,3 +296,4 @@ body {
     font-weight: 400;
     padding-top: 1px;
 }
+
